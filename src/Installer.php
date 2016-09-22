@@ -57,9 +57,7 @@
 
             $commands = [
                 $composer . ' install --no-scripts',
-                $composer . ' run-script post-root-package-install',
-                $composer . ' run-script post-install-cmd',
-                $composer . ' run-script post-create-project-cmd',
+                $composer . ' run-script post-install-cmd'
             ];
 
             $process = new Process(implode(' && ', $commands), $directory, null, null, null);
@@ -140,7 +138,34 @@
 
             $archive->close();
 
+            $source = $directory . DIRECTORY_SEPARATOR . 'skeleton-master';
+
+            $this->copy($source, $directory);
+
             return $this;
+        }
+
+        protected function copy($src, $dst)
+        {
+            $dir = opendir($src);
+
+            if (!is_dir($dst)) mkdir($dst);
+
+            while(false !== ($file = readdir($dir))) {
+                if (($file != '.') && ($file != '..')) {
+                    if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
+                        mkdir($dst . DIRECTORY_SEPARATOR . $file);
+                        $this->copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
+                    } else {
+                        copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
+                        unlink($src . DIRECTORY_SEPARATOR . $file);
+                    }
+                }
+            }
+
+            closedir($dir);
+
+            rmdir($src);
         }
 
         /**
