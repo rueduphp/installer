@@ -1,0 +1,25 @@
+{
+    "name": "rueduphp/installer",
+    "description": "Octo skeleton installer.",
+    "keywords": ["Octo", "Rue du PHP"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gérald Plusquellec",
+            "email": "gplusquellec@rueduphp.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rueduphp\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "~4.0|~5.0|~6.0",
+        "symfony/console": "~2.3|~3.0",
+        "symfony/process": "~2.3|~3.0"
+    },
+    "bin": [
+        "rueduphp"
+    ]
+}
